@@ -1,3 +1,4 @@
+// Based on this article - https://www.freecodecamp.org/news/how-to-build-a-snake-game-in-javascript/
 let grid = document.querySelector('.grid'),
     popup = document.querySelector('.popup'),
     playAgain = document.querySelector('.playAgain'),

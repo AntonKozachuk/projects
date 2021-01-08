@@ -1,3 +1,6 @@
+// Based on https://www.youtube.com/watch?v=QTcIXok9wNY
+// and https://github.com/WebDevSimplified/Javascript-Snake-Game
+
 import { getInputDirection } from './input.js'
 
 export const SNAKE_SPEED = 5;

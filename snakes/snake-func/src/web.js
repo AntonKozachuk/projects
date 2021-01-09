@@ -46,7 +46,7 @@ window.addEventListener('keydown', e => {
         case 'w': case 'h': case 'ArrowUp': state = enqueue(state, NORTH); break;
         case 'a': case 'j': case 'ArrowLeft': state = enqueue(state, WEST); break;
         case 's': case 'k': case 'ArrowDown': state = enqueue(state, SOUTH); break;
-        case 'd': case 'hl': case 'ArrowRight': state = enqueue(state, EAST); break;
+        case 'd': case 'l': case 'ArrowRight': state = enqueue(state, EAST); break;
     }
 });
 

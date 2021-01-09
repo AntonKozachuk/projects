@@ -1,4 +1,4 @@
-const adjust = n => f => x => mapi(x => i => i == n ? f(x) : x)(xs);
+const adjust = n => f => xs => mapi(x => i => i == n ? f(x) : x)(xs);
 const dropFirst = xs => xs.slice(1);
 const dropLast = xs => xs.slice(0, xs.length - 1);
 const id = x => x;

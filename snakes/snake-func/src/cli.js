@@ -29,9 +29,9 @@ process.stdin.on('keypress', (str, key) => {
     if (key.ctrl && key.name === 'c') process.exit();
     switch (key.name.toUpperCase()) {
         case 'W': case 'H': case 'UP': State = Snake.enqueue(State, Snake.NORTH); break;
-        case 'A': case 'J': case 'LEFT': State = Snake.enqueue(state, Snake.WEST); break;
-        case 'S': case 'K': case 'DOWN': State = Snake.enqueue(state, Snake.SOUTH); break;
-        case 'D': case 'L': case 'RIGHT': State = Snake.enqueue(state, Snake.EAST); break;
+        case 'A': case 'J': case 'LEFT': State = Snake.enqueue(State, Snake.WEST); break;
+        case 'S': case 'K': case 'DOWN': State = Snake.enqueue(State, Snake.SOUTH); break;
+        case 'D': case 'L': case 'RIGHT': State = Snake.enqueue(State, Snake.EAST); break;
     }
 });
 
@@ -40,4 +40,4 @@ const show = () => console.log('\x1Bc' + Matrix.toString(Matrix.fromState(State)
 const step = () => State = Snake.next(State);
 
 // Main
-setInterval(() => { step(); show() }, 80);
+setInterval(() => { step(); show() }, 100);

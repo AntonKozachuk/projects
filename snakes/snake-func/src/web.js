@@ -30,6 +30,7 @@ const draw = () => {
 };
 
 // Game loop update
+// t === timestamp
 const step = t1 => t2 => {
     if(t2 - t1 > 100) {
         state = next(state);

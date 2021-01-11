@@ -88,7 +88,7 @@ function spawnLocation() {
     do {
         xPos = Math.floor(Math.random() * rows) * tileSize;
         yPos = Math.floor(Math.random() * cols) * tileSize;
-        overlap = foodSnakeOverlap({ x: xPos, y: yPos});
+        overlap = foodSnakeOverlap({ x: xPos, y: yPos });
     } while (overlap);
 
     return { x: xPos, y: yPos };
@@ -108,8 +108,8 @@ function showPaused() {
     ctx.textAlign = 'center';
     let gradient = ctx.createLinearGradient(0, 0, width, 0);
     gradient.addColorStop('0', 'white');
-    gradient.addColorStop('0.5', 'white');
-    gradient.addColorStop('1.0', 'white');
+    gradient.addColorStop('0.5', 'green');
+    gradient.addColorStop('1.0', 'blue');
     ctx.fillStyle = gradient;
     ctx.fillText('PAUSED', width / 2, height / 2);
 };
@@ -154,7 +154,7 @@ class Snake {
     move() {
         // Tail movement
         for(let i = this.tail.length - 1; i > 0; i--) {
-            this.tail[i] = this.tail[i-1];
+            this.tail[i] = this.tail[i - 1];
         }
 
         // Updating the start of the tail to acquire the position of head
@@ -195,14 +195,99 @@ class Snake {
 
     border() {
         if(this.x + tileSize > width && this.velX != -1 || this.x < 0 && this.velX != 1) {
-            this.x = width = this.x;
+            this.x = width - this.x;
         }
         else if (this.y + tileSize > height && this.velY != -1 || this.y < 0 && this.velY != 1) {
-            this.y = height = this.y;
+            this.y = height - this.y;
         }
     }
 };
 
+class Food {
+    constructor(pos, color) {
+        this.x = pos.x;
+        this.y = pos.y;
+        this.color = color;
+    }
 
+    // Drawing the food on the canvas
+    draw() {
+        ctx.beginPath();
+        ctx.rect(this.x, this.y, tileSize, tileSize);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.closePath();
+    }
+};
 
+// Initialization of the game objects
+function init() {
+    tileSize = 20;
 
+    // Dynamically controlling the size of canvas
+    width = tileSize * Math.floor(window.innerWidth / tileSize);
+    height = tileSize * Math.floor(window.innerHeight / tileSize);
+
+    fps = 10;
+
+    then = Date.now();
+    startTime = then;
+    fpsInterval = 1000 / fps;
+
+    canvas = document.getElementById('game-area');
+    canvas.width = width;
+    canvas.height = height;
+    ctx = canvas.getContext('2d');
+    console.log(canvas);
+
+    isPaused = false;
+    score = 0;
+    snake = new Snake( { x: tileSize * Math.floor(width / (2 * tileSize)), y: tileSize * Math.floor(height / (2 * tileSize))}, '#39ff14');
+    food = new Food(spawnLocation(), 'red');
+};
+
+// Updating the position and redrawing of game objects
+function update() {
+    animationFrame = requestAnimationFrame(update);
+    now = Date.now();
+    elapsed = now - then;
+
+    if(elapsed > fpsInterval) {
+        // Get ready for next frame by setting then=now, but also adjust for your
+        // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+        then = now - (elapsed % fpsInterval);
+
+        if(isPaused) {
+            return;
+        }
+
+        if(snake.die()) {
+            alert('Game Over!');
+            cancelAnimationFrame(animationFrame);
+            window.location.reload();
+        }
+
+        snake.border();
+
+        if(snake.eat()) {
+            score += 10;
+            food = new Food(spawnLocation(), 'red');
+        }
+
+        // Clearing the canvas for redrawing
+        ctx.clearRect(0, 0, width, height);
+
+        food.draw();
+        snake.draw();
+        snake.move();
+        showScore();
+    }
+};
+
+function game() {
+    init();
+    update();
+}
